@@ -15,7 +15,7 @@ Colección de scripts útiles para administrar Proxmox VE, contenedores LXC y m�
 
 | Script | Descripción | Uso Rápido |
 |--------|-------------|------------|
-| [lxc-autologin.sh](#-lxc-autologinsh) | Configurar auto-login en contenedores LXC | `bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/lxc-autologin.sh)` |
+| [lxc-autologin.sh](#-lxc-autologinsh) | Configurar auto-login en contenedores LXC | `bash <(wget -qLO - https://raw.githubusercontent.com/Pocholo95/personal-proxmox-tools/main/lxc-autologin.sh)` |
 
 ## 🚀 Características
 
