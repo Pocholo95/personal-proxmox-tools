@@ -1,140 +1,264 @@
 # 🛠️ Proxmox Tools
 
-Colección de scripts útiles para administrar Proxmox VE y contenedores LXC.
+Colección de scripts útiles para administrar Proxmox VE, contenedores LXC y máquinas virtuales con interfaces interactivas al estilo Proxmox VE Helper Scripts.
+
+<div align="center">
+
+[![GitHub stars](https://img.shields.io/github/stars/tu-usuario/proxmox-tools?style=social)](https://github.com/tu-usuario/proxmox-tools/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/tu-usuario/proxmox-tools?style=social)](https://github.com/tu-usuario/proxmox-tools/network/members)
+[![GitHub issues](https://img.shields.io/github/issues/tu-usuario/proxmox-tools)](https://github.com/tu-usuario/proxmox-tools/issues)
+[![GitHub license](https://img.shields.io/github/license/tu-usuario/proxmox-tools)](https://github.com/tu-usuario/proxmox-tools/blob/main/LICENSE)
+
+</div>
 
 ## 📋 Scripts Disponibles
 
-### lxc-autologin.sh
+| Script | Descripción | Uso Rápido |
+|--------|-------------|------------|
+| [lxc-autologin.sh](#-lxc-autologinsh) | Configurar auto-login en contenedores LXC | `bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/lxc-autologin.sh)` |
 
-Script para configurar auto-login en contenedores LXC de Proxmox, eliminando la necesidad de ingresar usuario y contraseña cada vez que accedes al contenedor.
+## 🚀 Características
 
-**Características:**
-- ✅ Configuración automática de auto-login
-- ✅ Soporte para cualquier usuario (por defecto: root)
-- ✅ Validación de contenedor y estado
-- ✅ Instalación de alias para uso rápido
-- ✅ Mensajes con colores para mejor legibilidad
+- ✨ **Interfaces interactivas** con menús visuales
+- 🎨 **Diseño colorido** y fácil de usar
+- ⚡ **Modo CLI** para automatización
+- 💾 **Instalación permanente** opcional
+- 🛡️ **Validaciones** de seguridad incorporadas
+- 📖 **Documentación** detallada en cada script
+- 🔄 **Feedback visual** durante operaciones
 
-## 🚀 Instalación Rápida
+## 📦 Instalación
+
+### Opción 1: Uso Directo (Sin Instalar)
+
+Ejecuta cualquier script directamente desde GitHub:
 
 ```bash
-# Clonar el repositorio
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<nombre-script>.sh)
+```
+
+### Opción 2: Clonar Repositorio
+
+```bash
 git clone https://github.com/tu-usuario/proxmox-tools.git
 cd proxmox-tools
-
-# Dar permisos de ejecución
-chmod +x lxc-autologin.sh
-
-# Instalar alias (opcional pero recomendado)
-./lxc-autologin.sh --install-alias
+chmod +x *.sh
 ```
 
-## 📖 Uso
+### Opción 3: Instalación Individual
 
-### Configurar auto-login
+Cada script puede instalarse de forma permanente en `/usr/local/bin/`:
 
 ```bash
-# Con usuario root (por defecto)
-./lxc-autologin.sh 104
-
-# Con un usuario específico
-./lxc-autologin.sh 104 miusuario
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<nombre-script>.sh) --install
 ```
 
-### Usando el alias (después de instalarlo)
+## 📚 Documentación de Scripts
 
+### 🔐 lxc-autologin.sh
+
+Configura auto-login en contenedores LXC de Proxmox, eliminando la necesidad de ingresar usuario y contraseña.
+
+**Uso Rápido:**
 ```bash
-# Una vez instalado el alias, puedes usar:
-lxc-autologin 104
-lxc-autologin 105 admin
+# Modo interactivo
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/lxc-autologin.sh)
+
+# Modo CLI
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/lxc-autologin.sh) 104
+
+# Con usuario específico
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/lxc-autologin.sh) 104 miusuario
+
+# Instalar permanentemente
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/lxc-autologin.sh) --install
 ```
 
-### Opciones disponibles
+**Características:**
+- ✅ Interfaz interactiva con menú visual
+- 📊 Lista de contenedores disponibles
+- 🔄 Spinner animado durante operaciones
+- ⚠️ Validación de contenedor y estado
+- 💾 Instalación opcional como comando
 
-```bash
-./lxc-autologin.sh --help              # Mostrar ayuda
-./lxc-autologin.sh --install-alias     # Instalar alias en el sistema
-./lxc-autologin.sh <container_id>      # Configurar auto-login con root
-./lxc-autologin.sh <container_id> user # Configurar auto-login con usuario específico
-```
+**Documentación completa:** [Ver en Wiki](../../wiki/lxc-autologin)
 
-## ⚙️ Cómo Funciona
-
-El script configura systemd dentro del contenedor LXC para que el servicio `container-getty@1` inicie sesión automáticamente con el usuario especificado. 
-
-**Cambios realizados:**
-1. Crea el directorio `/etc/systemd/system/container-getty@1.service.d/`
-2. Crea un archivo `override.conf` con la configuración de auto-login
-3. Recarga systemd y habilita el servicio
-4. Reinicia el contenedor para aplicar los cambios
-
-## ⚠️ Consideraciones de Seguridad
-
-**Importante:** El auto-login elimina una capa de seguridad del contenedor. 
-
-**Recomendaciones:**
-- Úsalo solo en entornos de desarrollo o laboratorio
-- No uses auto-login en contenedores con datos sensibles
-- En producción, considera usar claves SSH en lugar de auto-login
-- Asegura el acceso al host de Proxmox con autenticación fuerte
+---
 
 ## 🔧 Requisitos
 
-- Proxmox VE (probado en versiones 7.x y 8.x)
-- Contenedor LXC con systemd (Ubuntu, Debian, etc.)
+- Proxmox VE 7.x o superior
 - Acceso root al host de Proxmox
+- `wget` o `curl` instalado
+- Bash 4.0 o superior
+
+## 📖 Guía de Uso General
+
+### Modo Interactivo
+
+Todos los scripts ofrecen un menú interactivo cuando se ejecutan sin argumentos:
+
+```bash
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<script>.sh)
+```
+
+Esto mostrará un menú con opciones como:
+1. Función principal del script
+2. Listar recursos disponibles
+3. Instalar script en el sistema
+4. Ver información y ayuda
+5. Salir
+
+### Modo CLI
+
+Para automatización o uso rápido, pasa argumentos directamente:
+
+```bash
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<script>.sh) [argumentos]
+```
+
+### Instalación Permanente
+
+Para instalar cualquier script como comando del sistema:
+
+```bash
+# Con sudo si es necesario
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<script>.sh) --install
+```
+
+Después podrás usar el comando directamente:
+```bash
+nombre-comando [argumentos]
+```
+
+## ⚠️ Consideraciones de Seguridad
+
+- 🔒 Revisa siempre el código antes de ejecutar scripts de internet
+- 🧪 Prueba primero en entornos de desarrollo
+- 💾 Realiza backups antes de modificar configuraciones críticas
+- 🔐 Ten cuidado con scripts que afectan la seguridad (como auto-login)
+- 📝 Lee la documentación de cada script antes de usarlo
 
 ## 🐛 Troubleshooting
 
-### El contenedor sigue pidiendo login
+### Error: "pct: command not found"
 
-Verifica que el servicio esté activo:
+**Solución:** Asegúrate de estar ejecutando el script en el **host de Proxmox**, no dentro de un contenedor.
+
+### Error de permisos
+
+**Solución:** Ejecuta con sudo o como root:
 ```bash
-pct enter <container_id>
-systemctl status container-getty@1.service
+sudo bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<script>.sh)
 ```
 
-### El script no encuentra el contenedor
+### El menú no se ve bien
 
-Asegúrate de:
-- Estar ejecutando el script en el host de Proxmox (no dentro del contenedor)
-- Que el ID del contenedor sea correcto
-- Que el contenedor exista: `pct list`
+**Solución:** Asegúrate de usar una terminal con soporte de colores ANSI. Si el problema persiste, usa el modo CLI.
 
-### El alias no funciona
+### Más ayuda
 
-Recarga tu shell:
+Para cada script específico, ejecuta:
 ```bash
-source ~/.bashrc  # o ~/.zshrc si usas zsh
+bash <(wget -qLO - https://raw.githubusercontent.com/tu-usuario/proxmox-tools/main/<script>.sh) --help
 ```
-
-O abre una nueva terminal.
 
 ## 🤝 Contribuciones
 
-¡Las contribuciones son bienvenidas! Si tienes ideas para más scripts útiles o mejoras:
+¡Las contribuciones son bienvenidas! Aquí hay algunas formas de ayudar:
+
+1. 🐛 **Reportar bugs** - Abre un issue en GitHub
+2. 💡 **Sugerir ideas** - Propón nuevos scripts o mejoras
+3. 📝 **Mejorar documentación** - Ayuda a hacer más claro el README
+4. 🔧 **Enviar pull requests** - Contribuye código
+
+### ¿Cómo contribuir?
 
 1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nuevo-script`)
+2. Crea una rama (`git checkout -b feature/nuevo-script`)
 3. Commit tus cambios (`git commit -am 'Agregar nuevo script'`)
 4. Push a la rama (`git push origin feature/nuevo-script`)
 5. Abre un Pull Request
 
-## 📝 To-Do
+### Lineamientos para nuevos scripts
 
-- [ ] Script para backup automático de contenedores
-- [ ] Script para clonar contenedores con configuración personalizada
-- [ ] Script para gestión de snapshots
-- [ ] Script para monitoreo de recursos de contenedores
+Al crear un nuevo script para este repositorio:
+
+- ✅ Incluir modo interactivo con menú
+- ✅ Incluir modo CLI para automatización
+- ✅ Usar colores para mejor UX
+- ✅ Validar entradas y condiciones
+- ✅ Incluir opción `--help`
+- ✅ Incluir opción `--install`
+- ✅ Documentar en el README
+- ✅ Comentar el código adecuadamente
+
+## 📝 Roadmap
+
+Scripts planeados para futuras versiones:
+
+### Contenedores LXC
+- [ ] 💾 Backup automático y programado
+- [ ] 📋 Clonación masiva con configuración
+- [ ] 🔄 Actualización masiva de contenedores
+- [ ] 📊 Monitoreo de recursos en tiempo real
+- [ ] 🗂️ Gestión de templates
+
+### Máquinas Virtuales
+- [ ] 🖥️ Creación rápida de VMs
+- [ ] 💿 Gestión de ISOs y templates
+- [ ] 📸 Snapshots automatizados
+
+### Networking
+- [ ] 🌐 Configuración simplificada de redes
+- [ ] 🔒 Gestión de firewall
+- [ ] 🌉 Configuración de bridges
+
+### Almacenamiento
+- [ ] 💾 Gestión de storages
+- [ ] 📊 Análisis de uso de disco
+- [ ] 🧹 Limpieza de recursos no utilizados
+
+### Sistema
+- [ ] ⚙️ Configuración inicial de Proxmox
+- [ ] 🔧 Mantenimiento automático
+- [ ] 📈 Dashboard de estado del cluster
+
+**¿Tienes una idea?** [Abre un issue](https://github.com/tu-usuario/proxmox-tools/issues/new) con la etiqueta `enhancement`.
 
 ## 📄 Licencia
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
+Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
 
 ## 👤 Autor
 
-Tu Nombre - [@tu-usuario](https://github.com/tu-usuario)
+**Tu Nombre**
+- GitHub: [@tu-usuario](https://github.com/tu-usuario)
+- Repositorio: [proxmox-tools](https://github.com/tu-usuario/proxmox-tools)
 
-## 🌟 Dame una estrella
+## 🙏 Agradecimientos
 
-Si este proyecto te fue útil, ¡considera darle una estrella en GitHub! ⭐
+- Inspirado en [Proxmox VE Helper Scripts](https://github.com/tteck/Proxmox) de tteck
+- Comunidad de Proxmox VE
+- Todos los contribuidores del proyecto
+
+## 📞 Soporte
+
+- 🐛 **Reportar bugs**: [GitHub Issues](https://github.com/tu-usuario/proxmox-tools/issues)
+- 💬 **Discusiones**: [GitHub Discussions](https://github.com/tu-usuario/proxmox-tools/discussions)
+- 📖 **Documentación**: [GitHub Wiki](https://github.com/tu-usuario/proxmox-tools/wiki)
+- ⭐ **Si te es útil**: Dale una estrella al repositorio
+
+## 🌟 Estrellas en el tiempo
+
+[![Stargazers over time](https://starchart.cc/tu-usuario/proxmox-tools.svg)](https://starchart.cc/tu-usuario/proxmox-tools)
+
+---
+
+<div align="center">
+
+**Hecho con ❤️ para la comunidad de Proxmox**
+
+Si este proyecto te ayudó, considera darle una ⭐
+
+</div>
